@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572498024509.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "827427951",
+    "id" : "C4A2A8D7",
+    "lastKnownWriteTime" : 1543956100,
+    "last_content_update" : 1543956100,
+    "path" : "D:/Dropbox/personal/resume/Berkeley - fall 2019/work samples/complex filtering and solicitation prep/01 - pull mailable alumni.R",
+    "project_path" : "01 - pull mailable alumni.R",
+    "properties" : {
+        "cursorPosition" : "162,9",
+        "scrollLine" : "147"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

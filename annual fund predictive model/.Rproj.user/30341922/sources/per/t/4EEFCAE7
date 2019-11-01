@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572496693170.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2410792494",
+    "id" : "4EEFCAE7",
+    "lastKnownWriteTime" : 1572496849,
+    "last_content_update" : 1572496849334,
+    "path" : "D:/Dropbox/personal/resume/Berkeley - fall 2019/work samples/annual fund predictive model/05-predict-new-values-and-prep-upload.R",
+    "project_path" : "05-predict-new-values-and-prep-upload.R",
+    "properties" : {
+        "cursorPosition" : "27,0",
+        "scrollLine" : "7"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

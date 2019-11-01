@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572498198661.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "19243561",
+    "id" : "8F33AFFA",
+    "lastKnownWriteTime" : 1543250716,
+    "last_content_update" : 1543250716,
+    "path" : "D:/Dropbox/personal/resume/Berkeley - fall 2019/work samples/complex filtering and solicitation prep/10-test-totals.R",
+    "project_path" : "10-test-totals.R",
+    "properties" : {
+        "cursorPosition" : "15,0",
+        "scrollLine" : "44"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572495919931.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1981084039",
+    "id" : "D0334667",
+    "lastKnownWriteTime" : 1572496095,
+    "last_content_update" : 1572496096017,
+    "path" : "D:/Dropbox/personal/resume/Berkeley - fall 2019/work samples/annual fund predictive model/02-build-test-models.R",
+    "project_path" : "02-build-test-models.R",
+    "properties" : {
+        "cursorPosition" : "282,0",
+        "marks" : "<:282,0\n>:282,21",
+        "scrollLine" : "256"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,313 @@
+---
+title: Setting the Stage for Theatre & Dance Fundraising Success
+author: "Alumni & Development"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  word_document: 
+    reference_docx: style-reference.docx
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+
+# libraries -------------------------------------------
+
+library(lubridate); library(beepr)
+library(tidyverse); library(muadc); library(magrittr)
+library(readxl); library(rlang)
+library(formattable); library(fundRaising)
+
+library(zoo)
+
+library(knitr); library(kableExtra); library(hrbrthemes)
+library(htmltools); library(htmlwidgets); library(sparkline)
+library(flextable)
+
+# functions -------------------------------------------
+
+abbr_dollars  <- function(x) {
+  
+  suffix  <- case_when(
+      x >= 1000000 ~ "M"
+    , x >= 1000    ~ "K"
+    , T            ~ ""
+  )
+  
+  multiplyby  <- case_when(
+      x >= 1000000 ~ .000001
+    , x >= 1000    ~ .001
+    , T            ~ 1
+  )
+    
+  val  <- signif(x, 2) * multiplyby
+    
+  paste0("$",val, suffix)
+  
+}
+
+
+paste_safe <- function(...,sep=" ") {
+     L <- list(...)
+     L <- lapply(L,function(x) {x[is.na(x)] <- ""; x})
+     ret <-gsub(paste0("(^",sep,"|",sep,"$)"),"",
+                 gsub(paste0(sep,sep),sep,
+                      do.call(paste,c(L,list(sep=sep)))))
+     is.na(ret) <- ret==""
+     ret
+     }
+
+
+makeheadertext  <- function(tier_number, data = tiersummary) {
+  
+  
+  n_prospects  <- data[[tier_number,3]]
+  prospects_label  <- ifelse(n_prospects ==1 , "prospect", "prospects")
+  proposals_this_tier  <- data[[tier_number,4]]
+  
+  
+  paste0(n_prospects, " ", prospects_label, ", ", abbr_dollars(proposals_this_tier), " in proposals")
+  
+}
+
+
+maketiertable  <- function(tier_name, data = pipeline) {
+  
+  data %>% 
+    filter(tier == tier_name) %>% 
+    arrange(-toask, name) %>% 
+    select(
+      Prospect = name
+      , `Solicitor` = solicitor
+      , `Still To Ask` = toask_show
+      , `Commits Made` = result_show
+      , `Target Date` = ask_date
+      , `Status` = status
+    ) %>%
+    flextable() %>% 
+    theme_zebra() %>% 
+    fontsize(size = 10, part = 'all') %>% 
+    bg(bg = millikinblue, part = 'header') %>% 
+    color(color = 'white', part = 'header') %>% 
+    align(j = 3, align = 'left', part = 'all') %>% 
+    align(j = 4, align = 'left', part = 'all') %>% 
+    align(j = 5, align = 'center', part = 'all') %>% 
+    # autofit()
+    # width(j = 1:6, width = c(2.23,1.14,.88,1.0,1.25))
+    width(j = 1:6, width = c(1.95,1,0.8,0.8,0.7,1.25))
+    
+    # kable()
+    # kable()  %>%
+    # mykableformat()
+}
+
+
+
+mykableformat  <- function(x)  {
+    kable_styling(
+        x
+      , bootstrap_options = c('striped','hover','responsive')
+      , full_width = F
+      , position = 'left' 
+    )
+}
+
+
+
+# data ------------------------------------------------
+
+if( !exists("lastinit") || lastinit < (now() - seconds(3) ) ) {
+  initcommitsdb()
+  lastinit  <- now()
+}
+
+
+
+tierbreaks  <- c(-1,999,24999,99999,999999,Inf)
+tierlabels  <- c("none", "Tier 4" ,"Tier 3", "Tier 2", "Tier 1")
+tierhumanvals <- c("no tier", "$1K+","$25K+", "$100K+", "$1M+")
+
+pipeline  <- file.newest("data", pattern = "^CTD prospects.*xlsx") %>% 
+  # read_excel(2, skip=1) %>% 
+  read_excel(2) %>% 
+  clean.df() %>% 
+  filter(
+      likelihood >= .3 # only include people with 30%+
+    , (is.na(statustoshow) | statustoshow != 'DO NOT SHOW' )
+  ) %>% 
+  mutate(
+      toask = fillna(toask, 0)
+    , tier = cut(toask, breaks = tierbreaks, labels = tierlabels)
+    , name =paste_safe(firstname, lastname)
+    , toask_show = abbr_dollars(toask)
+    , result_show = ifelse(is.na(result), na_chr, abbr_dollars(result))
+    , ask_date = as.yearmon(askbydttoshow)
+    , status = coalesce(statustoshow, ifelse(likelihood == 1, "committment secured", statustoshow) )
+  ) 
+
+
+tiersummary  <- pipeline %>% 
+  group_by(Tier = tier) %>% 
+  summarize(
+      `# of Prospects` = n()
+    , `Total Proposals` = sum(toask)
+  ) %>% 
+  mutate(
+    `Proposal Amt` = tierhumanvals
+  ) %>% 
+  select(Tier, `Proposal Amt`, `# of Prospects`, `Total Proposals`) %>% 
+  filter(Tier != 'none') %>% 
+  arrange(as.character(Tier))
+    
+n_prospects  <- sum(tiersummary$`# of Prospects`)
+total_proposals  <- sum(tiersummary$`Total Proposals`)
+
+```
+
+
+
+
+```{r}
+progress  <- file.newest("data", "^Progress") %>% 
+  read_excel(skip = 3 )
+
+progress_date  <- file.newest("data", "^Progress") %>% 
+  read_excel(n_max =2)
+progress_date  <- progress_date[[1,1]]
+
+ctd_commits  <- progress %>% 
+  filter(Project == 'Center for Theatre & Dance') %>% 
+  pull('Total Committed')
+
+
+ctd_goal  <- 5000000
+
+ctd_remains  <- ctd_goal - ctd_commits
+
+ctd_remains_exec  <- abbr_dollars(ctd_remains)
+
+status  <- tibble(
+  `CTD Funding Provided by` = c(
+      "Commitments during TMU"
+     , "Bond"
+     , "Endowment Draw"
+     , "Commitments after TMU"
+     , paste0("Remaining To Be Raised (as of ",progress_date,")" )
+     ) 
+  , Amount = c(
+       "$10,000,000" # historical giving
+     , "$10,000,000" # historical data from Finance
+     , "$5,000,000"  # historical data from action by trustees
+     , as.currency(ctd_commits)
+     , as.currency(ctd_remains)
+     
+     )
+)
+
+status_table  <- status %>% 
+  regulartable() %>% 
+  theme_zebra() %>% 
+  bg(bg = millikinblue, part = 'header') %>% 
+  color(color = 'white', part = 'header') %>% 
+  autofit() %>% 
+  add_footer(`CTD Funding Provided by` = 'Total', Amount = "$29,000,000") %>% 
+  bold(part = 'footer') %>% 
+  align(j = 1, align = 'left', part = 'all') %>% 
+  align(j = 2, align = 'right', part = 'all') 
+
+```
+
+## Executive Summary
+
+Executive Summary
+The Center for Theatre and Dance will open in the fall of 2020. In order to reach our targeted goal of the remaining `r ctd_remains_exec` needed to complete the building, we have developed a plan outlining how we will accomplish the goal by June 30, 2020, if not sooner, by identifying over $9 million in possible prospects.
+
+```{r}
+status_table
+```
+
+
+From our pool of CTD prospects, we have identified over `r n_prospects` prospects with total proposals, over and above what has previously been committed, of `r abbr_dollars(total_proposals)`. Those prospects have been tiered as follows:
+
+
+
+```{r}
+exectable  <- tiersummary %>% 
+  formattable() %>% 
+  mutate(`Total Proposals`=formattable::currency(`Total Proposals`, digits = 0)) %>% 
+  regulartable() %>% 
+  theme_zebra() %>% 
+  bg(bg = millikinblue, part = 'header') %>% 
+  color(color = 'white', part = 'header')  %>% 
+  autofit()
+  # width(j = 1:4, width = c(1.5, 1.130868, 1.8637401, 2.0053921) )
+
+
+exectable
+  # kable() %>% 
+  # mykableformat()
+```
+
+Detail about the donors in each tier including the prospect’s name, who will ask the prospect to give, how much we plan to ask for, and an estimated timeline for each prospects are below. 
+
+
+## Tier 1, $1M+ Prospects,   `r makeheadertext(1)`
+```{r}
+t1  <- maketiertable("Tier 1")
+t1
+# dim(t1)
+```
+
+
+## Tier 2, $100K+ Prospects  `r makeheadertext(2)`
+```{r}
+t2  <- maketiertable("Tier 2")
+t2
+# dim(t2)
+```
+
+
+## Tier 3, $25K+ Prospects  `r makeheadertext(3)`
+```{r}
+t3 <- maketiertable("Tier 3")
+t3
+# dim(t3)
+```
+
+
+## Tier 4, $1K+ Prospects  `r makeheadertext(4)`
+```{r}
+
+# NOTE NOTE NOTE ----------who are the 60+ propsects under $1000 on the report ??? 
+
+tier4summary  <- pipeline %>% 
+  filter(tier == 'Tier 4') %>% 
+  mutate(group = case_when(
+      toask >= 10000 ~ "1. over $10K"
+    , toask >= 1000 ~ "2. over $1K"
+    , T ~ "3. under $1K"
+  )) %>% 
+  group_by(group) %>% 
+  summarize(
+      n_prospects = n()
+    , totalproposals = sum(toask)
+  ) %>% 
+  arrange(group)
+
+```
+
+- `r tier4summary$n_prospects[1]` prospects with proposals over $10K, totaling over `r abbr_dollars(tier4summary$totalproposals[1])`
+- `r tier4summary$n_prospects[2]` prospects with proposals over $10K, totaling over `r abbr_dollars(tier4summary$totalproposals[2])`
+- Faculty and staff are also encouraged to give to this project
+
+
+```{r}
+t4  <- maketiertable("Tier 4")
+t4
+# dim(t4)
+```
+
+

@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572496297782.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2999776511",
+    "id" : "1E4E25AF",
+    "lastKnownWriteTime" : 1572496691,
+    "last_content_update" : 1572496691625,
+    "path" : "D:/Dropbox/personal/resume/Berkeley - fall 2019/work samples/annual fund predictive model/04-build-data-to-predict-from.R",
+    "project_path" : "04-build-data-to-predict-from.R",
+    "properties" : {
+        "cursorPosition" : "432,0",
+        "marks" : "<:432,-1\n>:432,0",
+        "scrollLine" : "437"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
