@@ -1,7 +1,5 @@
-Jake Tolbert Work Samples
+Samples of Work by Jake Tolbert
 ================================
-jaketolbert@gmail.com
-217-615-4221
 
 
 This directory contains an assortment of samples of the work I've done at Millikin for the last few years. You should find:
@@ -10,22 +8,22 @@ This directory contains an assortment of samples of the work I've done at Millik
 
 2. **campaign exec council pipeline report** - an RMarkdown report for a current capital project showing the current prospect pipeline. The report reads prospect data from a spreadsheet, then uses R Markdown to output a Word docx, because the senior development officer presenting the report wanted to be able to make edits by hand just before the meeting. Moving the data source from a spreadsheet to the Salesforce-based CRM we're implementing is on this year's high priority task list.
 
-3. **complex filtering and solicitation prep** - the R scripts used to build a fall mailing with multiple segments. Data exploration and prep is done in scripts 01 - pull mailing alumni.R and 02 - finalize mailing list.R. The third script resegments the data as appropriate for email (rather than mail) and preps for upload into the CRM. The final script, 10-test-totals.R, is used in an interative, exploratory way. It does a bit of simulation, testing different cutoffs for affinity and the AF predictive score, to see how those cutoffs might affect the mailing list numbers. Those insights were discussed with the annual fund team, and then incorporated into the finalization script. 
+3. **complex filtering and solicitation prep** - the R scripts used to build a fall mailing with multiple segments. Data exploration and prep is done in scripts `01 - pull mailing alumni.R` and `02 - finalize mailing list.R`. The third script resegments the data as appropriate for email (rather than mail) and preps for upload into the CRM. The final script, `10-test-totals.R`, is used in an interative, exploratory way. It does a bit of simulation, testing different cutoffs for affinity and the AF predictive score, to see how those cutoffs might affect the mailing list numbers. Those insights were discussed with the annual fund team, and then incorporated into the finalization script. 
 
 4. **dashboard reporting** - a screenshot of the dashboard I developed in Qlikview for our senior development team during the previous capital campaign, including both annual and capital progress to goal.
 
 5. **datawarehousing** - I've included a few of the SQL procedures I've written that run on a weekly basis in our datawarehouse. They include:
-    - *create-affinity-score.sql* - creates a straightforward affinity score based on constituent activity
-    - *create-commitments-procedure.sql* - combines gifts and pledge data to populate a table of commitments. Also creates multiple summary tables.
-    - *generate_lybunt_indicators.sql and make_lybunt_ind.sql* - creates the data to provide standardized lybunt indicators for 1, 3, 5, 10 years out. Uses make_lybunt_ind() to make the code more DRY.
+    - `create-affinity-score.sql` - creates a straightforward affinity score based on constituent activity
+    - `create-commitments-procedure.sql` - combines gifts and pledge data to populate a table of commitments. Also creates multiple summary tables.
+    - `generate_lybunt_indicators.sql and make_lybunt_ind.sql` - creates the data to provide standardized lybunt indicators for 1, 3, 5, 10 years out. Uses make_lybunt_ind() to make the code more DRY.
 
-6. **R packages** - a set of links to my github repos where I host packages that I've developed.
+6. **R packages** - a set of links to other github repos where I host R packages that I've developed.
 
 
 
 A Note About Confidentiality
 --------------------------------
-I've done my best to anonymize the data where necessary--as a result, numbers were purposefully rounded with no attempt to make total sum up properly and people's names were randomly replaced. Too, most of the R scripts run against our in-house datawarehouse, accessible only on campus (or via VPN)--I purposefully haven't provided access to that data, so the scripts aren't executable.
+I've done my best to anonymize the data where necessary--as a result, numbers were purposefully rounded with no attempt to make total sum up properly and people's names were randomly replaced. Too, most of the R scripts run against our in-house datawarehouse, accessible only on campus (or via VPN). I purposefully haven't provided access to that data, so the scripts aren't executable.
 
 
 
