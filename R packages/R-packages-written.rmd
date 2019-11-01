@@ -1,0 +1,24 @@
+R Packages by Jake Tolbert
+===========================
+
+
+[muadc](https://github.com/crazybilly/muadc)
+------------------------------------
+a collection of everyday tools I use day in and day out to optimize my workflow
+
+[mumodels](https://github.com/crazybilly/mumodels)
+------------------------------------
+functions to build training data for predictive models from our datawarehouse
+
+[rmapcounties](https://github.com/crazybilly/rmapcounties)
+------------------------------------
+a package designed to pull a list of counties within driving distance of a location, particularly useful when a development officer is hosting an event out of town and we want to build an invite list.
+
+[muaddresses](https://github.com/crazybilly/muaddresses)
+------------------------------------
+a package to standardize and validate mailing addresses. We use Runner to validate addresses as they're entered in the database--this package allows me to validate addresses against the USPS service so I can compare addresses received from outside sources against our already-standardized addresses.
+
+
+[fundRaising](https://github.com/crazybilly/fundRaising)
+------------------------------------
+a work-in-progress package, written in collaboration with analysts from other institutions, with a goal of providing useful tools to fundraising analysts at any institution.
